@@ -12,7 +12,7 @@ namespace DatasetGenerator
             var fontsList = new List<string> { "Arial", "Arial Narrow", "Calibri", "Times New Roman", "Calibri Light" };
             var fontStyles = new List<FontStyle> { FontStyle.Bold };
             var pathDataset = @"dataset.csv";
-            var drawString = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+            var drawString = "АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЧШЦЪЫЬЭЮЯ";
             var backgroundColor = "ffffffff";
             var saveFiles = true;
             var filesCatalogName = "images";
@@ -68,7 +68,7 @@ namespace DatasetGenerator
 
                                 var datasetValue = handwritingRecognition.GetDatasetValues(res, backgroundColor);
 
-                                tw.WriteLine($"{string.Join(",", datasetValue)},{c - 'A'}");
+                                tw.WriteLine($"{string.Join(",", datasetValue)},{c - 'А'}");
                             }
                         }
                     }
