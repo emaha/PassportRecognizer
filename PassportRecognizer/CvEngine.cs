@@ -29,7 +29,7 @@ namespace cv2
         {
             if (contours == null || contours.Count == 0) return null;
             // Средняя площадь контура
-            double avg = GetAvarageContoursArea(contours);
+            double avg = GetAverageContoursArea(contours);
             Console.WriteLine($"Avg. area: {avg}");
 
             // Создаем сортированный список по горизонтали (важно!!! без этого слово не соберется)
@@ -142,7 +142,7 @@ namespace cv2
         /// </summary>
         /// <param name="contours"></param>
         /// <returns></returns>
-        public static double GetAvarageContoursArea(List<Rect> contours)
+        public static double GetAverageContoursArea(List<Rect> contours)
         {
             double sum = 0;
             if (contours == null || contours.Count == 0) return 0;
