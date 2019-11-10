@@ -12,7 +12,7 @@ namespace DatasetGenerator
             var fontsList = new List<string> { "Arial", "Arial Narrow", "Calibri", "Times New Roman", "Calibri Light" };
             var fontStyles = new List<FontStyle> { FontStyle.Bold };
             var pathDataset = @"dataset.csv";
-            var drawString = "АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЧШЦЪЫЬЭЮЯ";
+            var drawString = "АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЧШЦЪЫЬЭЮЯ0123456789";
             var backgroundColor = "ffffffff";
             var saveFiles = true;
             var filesCatalogName = "images";
