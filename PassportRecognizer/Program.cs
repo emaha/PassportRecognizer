@@ -1,11 +1,11 @@
-﻿using OpenCvSharp;
+﻿using cv2;
+using OpenCvSharp;
 using System.Collections.Generic;
-using System.Linq;
 using Point = OpenCvSharp.Point;
 using Rect = OpenCvSharp.Rect;
 using Size = OpenCvSharp.Size;
 
-namespace cv2
+namespace PassportRecognizer
 {
     internal class Program
     {
@@ -14,8 +14,17 @@ namespace cv2
         // cv::erode(MCRregion, MCRregion, 24);
         // cv::bitwise_not(MCRregion, MCRregion);
 
+        // TODO: попробовать пройти по картинке свёрточной сеткой и выделять только те контуры,
+        // которые распознались как буквы, далее из них уже собирать действительные контуры слов.
+        //
+
+        // TODO: придумать способ динамически определять правильное расположение каждой группы слов
+
         private static void Main(string[] args)
         {
+            var conv = new ConvolutionNet();
+            conv.RecognizeLetter(@"C:\Temp\tiffs\A.png");
+
             // Каскад для определения лица
             CascadeClassifier cascadeClassifier = new CascadeClassifier(@"./casscade/haarcascade_frontalface_alt2.xml");
 
@@ -33,6 +42,7 @@ namespace cv2
 
             Mat img = new Mat();
             Cv2.CvtColor(src, img, ColorConversionCodes.BGR2GRAY);
+            Cv2.GaussianBlur(img, img, new Size(3, 3), 1.5f);
 
             Mat dst1 = new Mat();
             Mat dst2 = new Mat();
