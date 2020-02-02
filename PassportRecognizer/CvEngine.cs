@@ -11,12 +11,13 @@ namespace cv2
         private const double MaxContourRatio = 3f;
 
         // Максимальное расстояние по ширине для поиска ближайшего соседа
-        private const double MaxDistanceByWidth = 1.8f;
+        private const double MaxDistanceByWidth = 1.9f;
 
         // Максимальное расстояние по высоте для поиска ближайшего соседа
         private const double MaxDistanceByHeight = 1.5f;
 
-        // Отступ контура слова
+        // Отступ контура слова. 
+        // Берем картинку немного с запасом, чтобы распозновалка получила не обрезанное слово
         private const int ContourMargin = 10;
 
         /// <summary>
@@ -116,6 +117,38 @@ namespace cv2
             return sortedLinkGroups.ToList();
         }
 
+        internal static List<Rect> GetReadableAreaContours(Rect singleFace)
+        {
+            int x = singleFace.X;
+            int y = singleFace.Y;
+            int w = singleFace.Width;
+            int h = singleFace.Height;
+
+
+            List<Rect> rects = new List<Rect>();
+            // не прокатит!!!
+
+            return rects;
+        }
+
+        /// <summary>
+        /// Убираем лишние контуры (печати, узоры, подписи)
+        /// </summary>
+        /// <param name="possibleWords">Все возможные контуры слов</param>
+        /// <param name="singleFace">Контур лица как отсчетная точка</param>
+        /// <returns></returns>
+        public static List<Rect> RemoveTrashContours(List<Rect> possibleWords, Rect singleFace)
+        {
+            // TODO: проверяем нашли ли лицо.
+            // если да, то пытаемся от возможного лица убрать контуры,
+            // которые находятся непосредственно рядом (печати, узоры, подписи)
+
+            // предположим что 
+
+
+            return possibleWords;
+        }
+
         /// <summary>
         /// Получает возможные контуры букв
         /// </summary>
@@ -144,14 +177,9 @@ namespace cv2
         /// <returns></returns>
         public static double GetAverageContoursArea(List<Rect> contours)
         {
-            double sum = 0;
             if (contours == null || contours.Count == 0) return 0;
 
-            foreach (var item in contours)
-            {
-                sum += Area(item);
-            }
-            return sum / contours.Count;
+            return contours.Average(Area);
         }
 
         /// <summary>
@@ -159,7 +187,7 @@ namespace cv2
         /// </summary>
         /// <param name="rect"></param>
         /// <returns></returns>
-        private static double Area(Rect rect)
+        public static double Area(Rect rect)
         {
             return (rect.Right - rect.Left) * (rect.Bottom - rect.Top);
         }
@@ -202,7 +230,7 @@ namespace cv2
                 image.Rectangle(item, color, thickness);
                 if (drawText)
                 {
-                    image.PutText($"{cnt}", new Point(item.X, item.Y), HersheyFonts.Italic, 0.8, new Scalar(255, 0, 0));
+                    image.PutText($"{cnt}", new Point(item.X, item.Y), HersheyFonts.Italic, 1.2f, new Scalar(255, 0, 0));
                 }
 
                 cnt++;
@@ -210,7 +238,7 @@ namespace cv2
         }
 
         /// <summary>
-        /// Находит цепочку соседе связанных друг с другом
+        /// Находит цепочку соседей связанных друг с другом
         /// </summary>
         /// <param name="node"></param>
         /// <param name="usedNodes"></param>
@@ -245,7 +273,6 @@ namespace cv2
         /// <returns></returns>
         private static List<Node> FindLink(Node a, List<Node> nodes)
         {
-            //double width = Math.Sqrt(Area(a.Rect)) * MaxDistanceByWidth;
             List<Node> links = new List<Node>();
 
             foreach (var item in nodes)
@@ -256,12 +283,6 @@ namespace cv2
                 {
                     links.Add(item);
                 }
-
-                //if (GetDistance(new Point(a.Rect.X, a.Rect.Y), new Point(item.Rect.X, item.Rect.Y)) < width
-                //    && a.Id != item.Id)
-                //{
-                //    links.Add(item);
-                //}
             }
 
             return links;

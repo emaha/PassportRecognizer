@@ -34,7 +34,7 @@ namespace cv2
 
                     Bitmap bit = new Bitmap(mat.ToMemoryStream());
                     Pix pix = PixConverter.Bitmap2Pix(bit);
-                    pix.Save(@"C:\Temp\tiffs\mat" + cnt + ".png");
+                    //pix.Save(@"C:\Temp\tiffs\mat" + cnt + ".png");
 
                     // Распознавалка
                     var page = ocr.Process(pix);
